@@ -1,0 +1,71 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %}
+{% load crispy_forms_tags %}
+
+<ul class="nav nav-pills justify-content-center">
+    <li class="nav-item">
+        <a href="{% url 'homework' %}" class="nav-link">Homeworks</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'notes' %}" class="nav-link">Notes</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'dictionary' %}" class="nav-link">Dictionary</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'books' %}" class="nav-link">Books</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'todo' %}" class="nav-link">To-do</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'youtube' %}" class="nav-link">Youtube</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'wikipedia' %}" class="nav-link">Wikipedia</a>
+    </li>
+    <li class="nav-item">
+        <a href="#" class="nav-link active">Conversion</a>
+    </li>
+</ul>
+
+<hr>
+<div class="container text-center">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <legend class="border-bottom mb-4"></legend>
+            {{form|crispy}}
+            <button href="" class="btn btn-outline-info" type="submit">
+                Select
+            </button>
+        </div>
+        {% if inputs %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4"></legend>
+            <div class="row">
+                <div class="col-md-4">
+                    {{m_form.inputs|as_crispy_field}}
+                </div>
+                <div class="col-md-4">
+                    {{m_form.measure1|as_crispy_field}}
+                </div>
+                <div class="col-md-4">
+                    {{m_form.measure2|as_crispy_field}}
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="form-group">
+            {{answer}}
+        </fieldset>
+        <div class="form-group">
+            <button href="" class="btn btn-outline-info" type="submit">
+                Convert
+            </button>
+        </div>
+        {% endif %}
+    </form>
+</div>
+
+{% endblock content %}

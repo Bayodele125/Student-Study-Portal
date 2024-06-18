@@ -1,0 +1,54 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %}
+   
+<ul class="nav justify-content-center">
+    <li class="nav-item">
+        <a href="{% url 'homework' %}" class="nav-link">Homeworks</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'notes' %}" class="nav-link">Notes</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'dictionary' %}" class="nav-link">Dictionary</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'books' %}" class="nav-link">Books</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'todo' %}" class="nav-link">To-do</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'youtube' %}" class="nav-link">Youtube</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'wikipedia' %}" class="nav-link">Wikipedia</a>
+    </li>
+    <li class="nav-item">
+        <a href="#" class="nav-link">Conversion</a>
+    </li>
+</ul>
+
+<hr>
+<section class='text-center container'>
+
+    <div class="container">
+
+        <div class="content-section p-0 mt-5">
+
+            <div class="m-3">
+                <h2>{{notes.title}}</h2>
+            </div>
+
+            <hr class="p-0 m-0">
+            <p class="description m-5 p-5">
+                {{notes.description}}
+            </p>
+            <hr>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock content %}
