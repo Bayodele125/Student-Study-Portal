@@ -1,4 +1,3 @@
-
 from unittest import result
 from django.views.generic import DetailView
 from django.contrib import messages
