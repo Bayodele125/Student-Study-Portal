@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 import requests
 from .models import *
-from . forms import *
+from .forms import *
 from youtubesearchpython import VideosSearch
 import wikipedia
 from django.contrib.auth.decorators import login_required
