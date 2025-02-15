@@ -25,7 +25,7 @@
         <a href="{% url 'wikipedia' %}" class="nav-link">Wikipedia</a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link">Conversion</a>
+        <a href="{% url 'conversion' %}" class="nav-link">Conversion</a>
     </li>
 </ul>
 
@@ -38,6 +38,11 @@
                 {{form}}
         <input class="btn btn-danger" type="submit" value="Submit">
     </form><br>
+    
+    {% if message %}
+        <h6 class="ml-0 mt-1">{{message}}</h6>
+    {% endif %}
+        
 {% for result in results %}
     <a href="{{result.preview}}" target="_blank">
         <div class="card">

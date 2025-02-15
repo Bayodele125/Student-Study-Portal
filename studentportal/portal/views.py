@@ -99,6 +99,7 @@ def youtube(request):
         for i in video.result()['result']:
             result_dict ={
                 'input':text,
+                'video_id':i['id'],
                 'title':i['title'],  
                 'duration':i['duration'], 
                 'thumbnails':i['thumbnails'][0]['url'],
@@ -178,23 +179,27 @@ def books(request):
         text = request.POST['text']
         url = "https://www.googleapis.com/books/v1/volumes?q="+text
         r = requests.get(url)
-        answer = r.json()
-        result_list = []
-        for i in range(10):
-            result_dict ={
-                'title':answer['items'][i]['volumeInfo']['title'], 
-                'subtitle':answer['items'][i]['volumeInfo'].get('subtitle'), 
-                'description':answer['items'][i]['volumeInfo'].get('description'), 
-                'count':answer['items'][i]['volumeInfo'].get('pageCount'), 
-                'categories':answer['items'][i]['volumeInfo'].get('categories'), 
-                'rating':answer['items'][i]['volumeInfo'].get('pageRating'), 
-                'thumbnail':answer['items'][i]['volumeInfo'].get('imageLinks').get('thumbnail'), 
-                'preview':answer['items'][i]['volumeInfo'].get('previewLink') 
-            }
-            result_list.append(result_dict)
+        if r is None:
+            message = f'{text} not found'
+        else:
+            answer = r.json()
+            result_list = []
+            for i in range(10):
+                result_dict ={
+                    'title':answer['items'][i]['volumeInfo']['title'], 
+                    'subtitle':answer['items'][i]['volumeInfo'].get('subtitle'), 
+                    'description':answer['items'][i]['volumeInfo'].get('description'), 
+                    'count':answer['items'][i]['volumeInfo'].get('pageCount'), 
+                    'categories':answer['items'][i]['volumeInfo'].get('categories'), 
+                    'rating':answer['items'][i]['volumeInfo'].get('pageRating'), 
+                    'thumbnail':answer['items'][i]['volumeInfo'].get('imageLinks').get('thumbnail'), 
+                    'preview':answer['items'][i]['volumeInfo'].get('previewLink') 
+                }
+                result_list.append(result_dict)
             context = {
                 'form':form,
-                'results':result_list
+                'results':result_list,
+                'message':message
             }
         return render(request,'books.html',context)
     form = DashboardForm()
@@ -295,10 +300,27 @@ def conversion(request):
                 inputs = request.POST['inputs']
                 answer = ''
                 if inputs and int(inputs) >= 0:
-                    if first == 'yard' and second == 'foot':
-                        answer = f'{inputs} yard = {int(inputs)*3} foot'
-                    if first == 'foot' and second == 'yard':
-                        answer = f'{inputs} foot = {int(inputs)/3} yard'
+                    if first == 'inch' and second == 'centimeter':
+                        answer = f'{inputs} inch = {float(inputs)*2.54} cm'
+                    if first == 'centimeter' and second == 'inch':
+                        answer = f'{inputs} cm = {float(inputs)/2.54} inch'
+                    if first == 'foot' and second == 'meter':
+                        answer = f'{inputs} foot = {float(inputs)*0.3048} m'
+                    if first == 'meter' and second == 'foot':
+                        answer = f'{inputs} m = {float(inputs)/0.3048} foot'
+                    if first == 'mile' and second == 'kilometer':
+                        answer = f'{inputs} mile = {float(inputs)*1.60934} km'
+                    if first == 'kilometer' and second == 'mile':
+                        answer = f'{inputs} km = {float(inputs)/1.60934} mile'
+                    if first == 'yard' and second == 'meter':
+                        answer = f'{inputs} yard = {float(inputs)*0.9144} m'
+                    if first == 'meter' and second == 'yard':
+                        answer = f'{inputs} m = {float(inputs)/0.9144} yard'
+                    if first == 'millimeter' and second == 'centimeter':
+                        answer = f'{inputs} mm = {float(inputs)/10} cm'
+                    if first == 'centimeter' and second == 'millimeter':
+                        answer = f'{inputs} cm = {float(inputs)*10} mm'
+
                 context = {
                     'form':form,
                     'm_form':measurement_form,
@@ -318,10 +340,23 @@ def conversion(request):
                 inputs = request.POST['inputs']
                 answer = ''
                 if inputs and int(inputs) >= 0:
-                    if first == 'pound' and second == 'killogram':
-                        answer = f'{inputs} pound = {float(inputs)*0.453592} killogram'
-                    if first == 'killogram' and second == 'pound':
-                        answer = f'{inputs} killogram = {float(inputs)*2.20462} pound'
+                    if first == 'pound' and second == 'kilogram':
+                        answer = f'{inputs} pound = {float(inputs)*0.453592} kg'
+                    if first == 'kilogram' and second == 'pound':
+                        answer = f'{inputs} kg = {float(inputs)*2.20462} pound'
+                    if first == 'ounce' and second == 'gram':
+                        answer = f'{inputs} oz = {float(inputs)*28.3495} g'
+                    if first == 'gram' and second == 'ounce':
+                        answer = f'{inputs} g = {float(inputs)/28.3495} oz'
+                    if first == 'ton' and second == 'kilogram':
+                        answer = f'{inputs} ton = {float(inputs)*907.185} kg'
+                    if first == 'kilogram' and second == 'ton':
+                        answer = f'{inputs} kg = {float(inputs)/907.185} ton'
+                    if first == 'milligram' and second == 'gram':
+                        answer = f'{inputs} mg = {float(inputs)/1000} g'
+                    if first == 'gram' and second == 'milligram':
+                        answer = f'{inputs} g = {float(inputs)*1000} mg'
+
                 context = {
                     'form':form,
                     'm_form':measurement_form,

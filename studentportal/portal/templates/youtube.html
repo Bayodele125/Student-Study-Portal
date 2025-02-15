@@ -26,12 +26,13 @@
         <a href="{% url 'wikipedia' %}" class="nav-link">Wikipedia</a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link">Conversion</a>
+        <a href="{% url 'conversion' %}" class="nav-link">Conversion</a>
     </li>
 </ul>
 
 <hr>
 <section class='text-center container'>
+    <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/bRZwzy0xvhM?si=Lin9b_-nnwIivGae" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
     <h2>Search Videos in Youtube</h2>
     <p>search videos and select any video to open in youtube</p>
     <form action="" method="post">
@@ -42,13 +43,12 @@
 
     {% for result in results %}
     
-    <a href="{{result.link}}" target="_blank">
+    <a href="#" onclick="playvideo('{{result.video_id}}')">
         <div class="card">
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-5">
                         <img class="img-fluid" src="{{result.thumbnails}}" alt="">
-
                     </div>
                     <div class="col-md-7">
                         <h3 class="p-0 m-0">{{result.title}}</h3>
@@ -71,5 +71,42 @@
     {% endfor %}
     <br>
 </section>
+
+<!-- Add Modal HTML -->
+<div class="modal" id="videoModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Video Player</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h2 id='videosrc'></h2>
+        <iframe id="videoFrame" width="100%" height="315" src="" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function playvideo(videoId) {
+    var videoUrl = "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
+    document.getElementById('videoFrame').src = videoUrl;
+    $('#videoModal').modal('show');
+}
+
+// Handle modal close event to stop video playback
+$('#videoModal').on('hidden.bs.modal', function () {
+    document.getElementById('videoFrame').src = '';
+});
+
+// Ensure close button works
+$('#videoModal .close').click(function() {
+    $('#videoModal').modal('hide');
+});
+</script>
+
 
 {% endblock content %}

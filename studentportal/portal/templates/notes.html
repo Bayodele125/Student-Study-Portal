@@ -4,13 +4,13 @@
 {% block title %}NOTES{% endblock title %}
 {% block logo %}<link rel="icon" href="/static/images/book.png">{% endblock logo %}
 {% block style %}
-   <style type="text/css">
+   <!-- <style type="text/css">
         body{background: url("{% static 'images/background.jpg' %}") repeat;}
        #sidebar .sidebar_top{background: url("{% static 'images/sidebar_middle.png' %}") repeat;}
        #sidebar .sidebar_top{background: url("{% static 'images/sidebar_top.png' %}") no-repeat;}
        #sidebar .sidebar_bottom{background: url("{% static 'images/sidebar_bottom.png' %}") no-repeat;}
        .categories_list li a{background: url("{% static 'images/list.png' %}") center left no-repeat;}
-   </style> 
+   </style>  -->
 {% endblock style %}
 
 {% block content %}
@@ -38,7 +38,7 @@
         <a href="{% url 'wikipedia' %}" class="nav-link">Wikipedia</a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link">Conversion</a>
+        <a href="{% url 'conversion' %}" class="nav-link">Conversion</a>
     </li>
 </ul>
 
@@ -78,7 +78,7 @@
             {% for note in notes %}
                 
             
-            <div class="col-md-4 single-note-item all-category" style="">
+            <div class="col-md-4 single-note-item all-category">
                 <div class="card card-body">
                     <span class="side-stick"></span>
                     <h5 class="note-title text-truncate w-75 mb-0" data-noteheading="Book a Ticket for Movie">{{note.title | title}} <i class="point fa fa-circle ml-1 font-10"></i></h5>

@@ -32,7 +32,12 @@ class ConversionForm(forms.Form):
     measurement = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
 
 class ConversionLengthForm(forms.Form):
-    CHOICES = [('yard','Yard'), ('foot','Foot')]
+    CHOICES = [
+        ('inch', 'Inch'), ('foot', 'Foot'), ('yard', 'Yard'), ('mile', 'Mile'),
+        ('millimeter', 'Millimeter'), ('centimeter', 'Centimeter'),
+        ('meter', 'Meter'), ('kilometer', 'Kilometer')
+    ]
+
     inputs = forms.CharField(required=False, label=False, widget=forms.TextInput(
             attrs = {'type':'number', 'placeholder':'Enter the Number'}
         ))
@@ -40,7 +45,12 @@ class ConversionLengthForm(forms.Form):
     measure2 = forms.CharField(label='', widget=forms.Select(choices=CHOICES))
 
 class ConversionMassForm(forms.Form):
-    CHOICES = [('pound','Pound'), ('killogram','Killogram')]
+    CHOICES = [
+        ('milligram', 'Milligram'), ('gram', 'Gram'),
+        ('kilogram', 'Kilogram'), ('ton', 'Metric Ton'),
+        ('ounce', 'Ounce'), ('pound', 'Pound'), ('us_ton', 'US Ton')
+    ]
+
     inputs = forms.CharField(required=False, label=False, widget=forms.TextInput(
             attrs = {'type':'number', 'placeholder':'Enter the Number'}
         ))
