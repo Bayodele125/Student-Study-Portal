@@ -3,12 +3,9 @@ django-embed-video
 djangorestframework
 youtube-search-python
 wikipedia
-<<<<<<< HEAD
 crispy-bootstrap5
 waitress
 google-genai
-=======
 crispy-bootstrap5
 django-crispy-forms
-waitress==3.0.2
->>>>>>> dbae3dd8354c0bf7237ecc977cccd958bbad2b17
+waitress
