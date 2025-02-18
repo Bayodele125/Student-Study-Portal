@@ -1,11 +1,11 @@
-Django==5.0.1
-django-embed-video==1.4.9
-djangorestframework==3.14.0
-youtube-search-python==1.6.6
-wikipedia==1.4.0
+Django
+django-embed-video
+djangorestframework
+youtube-search-python
+wikipedia
 <<<<<<< HEAD
-crispy-bootstrap5==2024.10
-waitress==3.0.2
+crispy-bootstrap5
+waitress
 google-genai
 =======
 crispy-bootstrap5
