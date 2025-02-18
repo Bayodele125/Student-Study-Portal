@@ -35,5 +35,8 @@ urlpatterns = [
     path('wikipedia', views.wiki, name='wikipedia'),
 
     #conversion
-    path('conversion', views.conversion, name='conversion')
+    path('conversion', views.conversion, name='conversion'),
+
+    # ASKAI
+    path('askai', views.askAI, name='askAI'),
 ]

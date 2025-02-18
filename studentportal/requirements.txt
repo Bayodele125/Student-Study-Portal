@@ -6,3 +6,4 @@ youtube-search-python==1.6.6
 wikipedia==1.4.0
 crispy-bootstrap5==2024.10
 waitress==3.0.2
+google-genai

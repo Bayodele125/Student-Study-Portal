@@ -1,7 +1,6 @@
 {% extends 'base.html' %} 
 {% load static %} 
 {% block content %}
-{% load crispy_forms_tags %}
 
 <ul class="nav nav-pills justify-content-center">
     <li class="nav-item">
@@ -11,24 +10,63 @@
         <a href="{% url 'notes' %}" class="nav-link">Notes</a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'dictionary' %}" class="nav-link">Dictionary</a>
+        <a href="{% url 'todo' %}" class="nav-link">Todo</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'youtube' %}" class="nav-link">YouTube</a>
     </li>
     <li class="nav-item">
         <a href="{% url 'books' %}" class="nav-link">Books</a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'todo' %}" class="nav-link">To-do</a>
+        <a href="{% url 'dictionary' %}" class="nav-link">Dictionary</a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'youtube' %}" class="nav-link">Youtube</a>
-    </li>
-    <li class="nav-item">
-        <a href="{% url 'wikipedia' %}" class="nav-link">Wikipedia</a>
+        <a href="{% url 'wiki' %}" class="nav-link">Wiki</a>
     </li>
     <li class="nav-item">
         <a href="{% url 'conversion' %}" class="nav-link active">Conversion</a>
     </li>
+    <li class="nav-item">
+        <a href="{% url 'askAI' %}" class="nav-link">Ask AI</a>
+    </li>
 </ul>
+
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="POST" class="mb-4">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-primary">Select Conversion Type</button>
+            </form>
+
+            {% if inputs %}
+            <form method="POST" class="mb-4">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ m_form.as_p }}
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="inputs" placeholder="Enter Value" required>
+                </div>
+                <button type="submit" class="btn btn-success">Convert</button>
+            </form>
+            {% endif %}
+
+            {% if answer %}
+            <div class="alert alert-success mt-4">
+                <h4>Conversion Result:</h4>
+                <p>{{ answer }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
 
 <hr>
 <div class="container text-center">

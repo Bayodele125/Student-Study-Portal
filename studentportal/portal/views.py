@@ -8,6 +8,7 @@ from .forms import *
 from youtubesearchpython import VideosSearch
 import wikipedia
 from django.contrib.auth.decorators import login_required
+from google import genai
 # Create your views here.
 
 def home(request):
@@ -327,7 +328,7 @@ def conversion(request):
                     'inputs':True,
                     'answer':answer
                 }
-        if request.POST['measurement'] == 'mass':
+        elif request.POST['measurement'] == 'mass':
             measurement_form = ConversionMassForm()
             context = {
                 'form':form,
@@ -363,6 +364,71 @@ def conversion(request):
                     'inputs':True,
                     'answer':answer
                 }
+        elif request.POST['measurement'] == 'volume':
+            measurement_form = ConversionVolumeForm()
+            context = {
+                'form':form,
+                'm_form':measurement_form,
+                'inputs':True
+            }
+            if 'inputs' in request.POST:
+                first = request.POST['measure1']
+                second = request.POST['measure2']
+                inputs = request.POST['inputs']
+                answer = ''
+                if inputs and float(inputs) >= 0:
+                    if first == 'liter' and second == 'milliliter':
+                        answer = f'{inputs} L = {float(inputs)*1000} mL'
+                    if first == 'milliliter' and second == 'liter':
+                        answer = f'{inputs} mL = {float(inputs)/1000} L'
+                    if first == 'gallon' and second == 'liter':
+                        answer = f'{inputs} gal = {float(inputs)*3.78541} L'
+                    if first == 'liter' and second == 'gallon':
+                        answer = f'{inputs} L = {float(inputs)/3.78541} gal'
+                    if first == 'quart' and second == 'liter':
+                        answer = f'{inputs} qt = {float(inputs)*0.946353} L'
+                    if first == 'liter' and second == 'quart':
+                        answer = f'{inputs} L = {float(inputs)/0.946353} qt'
+
+                context = {
+                    'form':form,
+                    'm_form':measurement_form,
+                    'inputs':True,
+                    'answer':answer
+                }
+        elif request.POST['measurement'] == 'area':
+            measurement_form = ConversionAreaForm()
+            context = {
+                'form':form,
+                'm_form':measurement_form,
+                'inputs':True
+            }
+            if 'inputs' in request.POST:
+                first = request.POST['measure1']
+                second = request.POST['measure2']
+                inputs = request.POST['inputs']
+                answer = ''
+                if inputs and float(inputs) >= 0:
+                    if first == 'square_meter' and second == 'acre':
+                        answer = f'{inputs} m² = {float(inputs)*0.000247105} acres'
+                    if first == 'acre' and second == 'square_meter':
+                        answer = f'{inputs} acres = {float(inputs)*4046.86} m²'
+                    if first == 'hectare' and second == 'acre':
+                        answer = f'{inputs} ha = {float(inputs)*2.47105} acres'
+                    if first == 'acre' and second == 'hectare':
+                        answer = f'{inputs} acres = {float(inputs)/2.47105} ha'
+                    if first == 'square_meter' and second == 'hectare':
+                        answer = f'{inputs} m² = {float(inputs)/10000} ha'
+                    if first == 'hectare' and second == 'square_meter':
+                        answer = f'{inputs} ha = {float(inputs)*10000} m²'
+
+                context = {
+                    'form':form,
+                    'm_form':measurement_form,
+                    'inputs':True,
+                    'answer':answer
+                }
+
     else:
         context = {
             'form':ConversionForm(),
@@ -403,3 +469,21 @@ def profile(request):
         'todos_done':todos_done
     }
     return render(request, 'profile.html',context)
+
+def askAI(request):
+    client = genai.Client(api_key='AIzaSyAKoDg23Q9jx90u3ufByOqdm8kWCOP1Q-M')
+    if request.method == 'POST':
+        question = request.POST['question']
+        response = client.models.generate_content(model='gemini-2.0-flash', contents=str(question))
+
+        if response is not None:
+            context = {
+                'response':response.text
+            }
+            return render(request, 'askAI.html', context)
+        else:
+            messages.error(request, ('Failed to get response'))
+            return redirect('askAI')
+    return render(request, 'askAI.html')
+        
+
