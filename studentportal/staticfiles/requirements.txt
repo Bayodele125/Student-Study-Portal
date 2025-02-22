@@ -1,0 +1,11 @@
+Django
+django-embed-video
+djangorestframework
+youtube-search-python
+wikipedia
+crispy-bootstrap5
+waitress
+google-genai
+crispy-bootstrap5
+django-crispy-forms
+waitress

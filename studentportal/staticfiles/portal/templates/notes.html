@@ -1,0 +1,127 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}NOTES{% endblock title %}
+{% block logo %}<link rel="icon" href="/static/images/book.png">{% endblock logo %}
+{% block style %}
+   <!-- <style type="text/css">
+        body{background: url("{% static 'images/background.jpg' %}") repeat;}
+       #sidebar .sidebar_top{background: url("{% static 'images/sidebar_middle.png' %}") repeat;}
+       #sidebar .sidebar_top{background: url("{% static 'images/sidebar_top.png' %}") no-repeat;}
+       #sidebar .sidebar_bottom{background: url("{% static 'images/sidebar_bottom.png' %}") no-repeat;}
+       .categories_list li a{background: url("{% static 'images/list.png' %}") center left no-repeat;}
+   </style>  -->
+{% endblock style %}
+
+{% block content %}
+    
+<ul class="nav nav-pills justify-content-center">
+    <li class="nav-item">
+        <a href="{% url 'homework' %}" class="nav-link">Homeworks</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'notes' %}" class="nav-link active">Notes</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'dictionary' %}" class="nav-link">Dictionary</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'books' %}" class="nav-link">Books</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'todo' %}" class="nav-link">To-do</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'youtube' %}" class="nav-link">Youtube</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'wikipedia' %}" class="nav-link">Wikipedia</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'conversion' %}" class="nav-link">Conversion</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'askAI' %}" class="nav-link">Ask AI</a>
+    </li>
+</ul>
+
+
+<hr>
+
+<!-- sidebar -->
+    <div id="header_bar">
+    </div>
+      <!-- end of header_bar -->
+      <div class="cleaner"></div>
+      <div id="sidebar">
+        <div class="sidebar_top"></div>
+        <div class="sidebar_bottom"></div>
+        <div class="sidebar_section">
+        <div class="cleaner"></div>
+        </div>
+        <div class="sidebar_section">
+          <h2>Note Titles</h2>
+          <ul class="categories_list">
+            {% for title in notes%}
+                <li><a href='{% url "notes_detail" title.id %}'>{{title.title}} </a></li>    
+            {% endfor %}
+            {% if notes %}
+                <li>Number of Notes: {{notes|length}}</li>
+            {% endif %}
+            
+          </ul>
+        </div>
+      </div>
+
+            <!-- content -->
+            <div class="content">
+                
+                <div class="tab-content bg-transparent">
+        <div id="note-full-container" class="note-has-grid row">
+
+            {% for note in notes %}
+                
+            
+            <div class="col-md-4 single-note-item all-category">
+                <div class="card card-body">
+                    <span class="side-stick"></span>
+                    <h5 class="note-title text-truncate w-75 mb-0" data-noteheading="Book a Ticket for Movie">{{note.title | title}} <i class="point fa fa-circle ml-1 font-10"></i></h5>
+                    <p class="note-date fonts-12 text-muted">11 March 2009</p>
+                    <div class="note-content">
+                        <p class="note-inner-content text-muted" data-notecontent="Blandit tempus porttitor aasfs. Integer posuere erat a ante venenatis.">{{note.description}} </p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="mr-1"><i class="fa fa-star favourite-note"><a href="#"></a></i></span>
+                        <div class="ml-auto">
+                            <a href="{% url 'delete_note' note.id %}"><span class="mr-1"><i class="fa fa-trash remove-note"></i></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+                                <br><br>
+                    <div class="form">
+                        <form method="POST">
+                        {% csrf_token %}
+                            <fieldset class="form-group">
+                                <legend class="border-bottom mb-4">Create New Notes</legend>
+                                {% for form in form %}  
+                                    {{form.label}}<br>
+                                    {{form}}<br>
+                                {% endfor %}
+                            </fieldset>
+                            <div class="form-group">
+                                <button href="" class="btn btn-outline-info" type="submit">
+                                    Create
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+        </div>
+    </div>
+
+<br><br><br><br>
+
+
+{% endblock content %}

@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Add Prism.js for syntax highlighting -->
+<link href="{% static 'prismjs/prism.min.css' %}" rel="stylesheet" />
+<script src="{% static 'prismjs/prism.min.js' %}"></script>
+
+
+
+<ul class="nav nav-pills justify-content-center">
+
+    <li class="nav-item">
+        <a href="{% url 'homework' %}" class="nav-link">Homeworks</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'notes' %}" class="nav-link">Notes</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'todo' %}" class="nav-link">Todo</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'youtube' %}" class="nav-link">YouTube</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'books' %}" class="nav-link">Books</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'dictionary' %}" class="nav-link">Dictionary</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'wikipedia' %}" class="nav-link">Wiki</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'conversion' %}" class="nav-link">Conversion</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'askAI' %}" class="nav-link active">Ask AI</a>
+    </li>
+</ul>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Ask AI Assistant</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <textarea class="form-control" name="question" rows="4" 
+                                placeholder="Ask me anything..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Ask</button>
+                    </form>
+
+                    {% if response %}
+                    <div class="mt-4">
+                        <h5>AI Response:</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="ai-response">
+                                    {{ response|safe }}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .ai-response {
+        font-size: 1.1em;
+        line-height: 1.6;
+        color: #333;
+    }
+    .ai-response ul {
+        list-style-type: disc;
+        padding-left: 2em;
+        margin: 1em 0;
+    }
+    .ai-response li {
+        margin-bottom: 0.5em;
+    }
+    .ai-response pre {
+        background: #f5f5f5;
+        padding: 1em;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin: 1em 0;
+    }
+    .ai-response code {
+        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    }
+</style>
+
+{% endblock %}

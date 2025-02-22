@@ -38,5 +38,5 @@ urlpatterns = [
     path('conversion', views.conversion, name='conversion'),
 
     # ASKAI
-    path('askai', views.askAI, name='askAI'),
+    path('askAi', views.ask_ai, name='askAI'),
 ]

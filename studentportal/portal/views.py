@@ -1,5 +1,9 @@
 from unittest import result
+import markdown
+from django.utils.safestring import mark_safe
+from datetime import datetime
 from django.views.generic import DetailView
+from django.http import JsonResponse
 from django.contrib import messages
 from django.shortcuts import redirect, render
 import requests
@@ -20,7 +24,7 @@ def notes(request):
         form =NotesForm(request.POST)
         if form.is_valid():
             notes = Notes(user = request.user,title=request.POST['title'],description =request.POST['description'])
-            notes.save()
+            notes.save() 
         messages.success(request,f'Note Added from {request.user.username} Successfully!')
     else:
         form =NotesForm()
@@ -470,20 +474,41 @@ def profile(request):
     }
     return render(request, 'profile.html',context)
 
-def askAI(request):
+def ask_ai(request):
     client = genai.Client(api_key='AIzaSyAKoDg23Q9jx90u3ufByOqdm8kWCOP1Q-M')
+
     if request.method == 'POST':
-        question = request.POST['question']
-        response = client.models.generate_content(model='gemini-2.0-flash', contents=str(question))
+        question = request.POST.get('question', '')
 
-        if response is not None:
-            context = {
-                'response':response.text
-            }
-            return render(request, 'askAI.html', context)
-        else:
-            messages.error(request, ('Failed to get response'))
-            return redirect('askAI')
-    return render(request, 'askAI.html')
+        # Ensure question is not empty
+        if not question.strip():
+            return JsonResponse({'error': 'Question cannot be empty'}, status=400)
+
+        try:
+            response = client.models.generate_content(model='gemini-2.0-flash', contents=question)
+            formatted_response = format_response(response.text) if response else "Sorry, I couldn't generate a response."
+
+            print(formatted_response)
+            timestamp = datetime.now().strftime('%H:%M')
+
+            # Return JSON response for AJAX
+            return JsonResponse({
+                'response': formatted_response,
+                'timestamp': timestamp
+            })
         
+        except Exception as e:
+            return JsonResponse({'error': f'AI Error: {str(e)}'}, status=500)
 
+    return render(request, 'askAI.html')
+
+
+def format_response(response_text):
+    """Formats AI-generated response with HTML markdown styling."""
+    if not response_text:
+        return "No response available."
+
+    # Convert Markdown to HTML
+    formatted_text = markdown.markdown(response_text, extensions=['fenced_code', 'nl2br', 'sane_lists'])
+
+    return mark_safe(formatted_text)  # Ensure safe rendering in Django templates
